@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+    ">
+
+    <routeContext id="inboundRoutes" xmlns="http://camel.apache.org/schema/spring">
+        <route id="inside" streamCache="true">
+            <from uri="file:input"/>
+            <setHeader headerName="CamelAwsS3ContentLength">
+                <header>CamelFileLength</header>
+            </setHeader>
+            <setHeader headerName="CamelAwsS3Key">
+                <header>CamelFileName</header>
+            </setHeader>
+            <to uri="log:rightster.in-bound?level=INFO" />
+            <to uri="aws-s3://javi-test-bucket?accessKey=AKIAIS5JMRHSUDVKTK5A&amp;secretKey=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&amp;region=eu-west-1"/>
+        </route>
+    </routeContext>
+
+</beans>
